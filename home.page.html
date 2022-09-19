@@ -1,0 +1,49 @@
+{{template "layout" .}}
+
+{{define "css"}}
+    
+    <style>
+        .col{
+        text-align: center;
+        text-justify: inter-word;
+        padding-top: 400px;
+        }
+    
+        .blinking{
+            animation:blinkingText 1.2s infinite;
+            font-size: 50px;
+        }
+
+        @keyframes blinkingText{
+            0%{     color: red;    }
+            20%{    color: green;    }
+            49%{    color: blue; }
+            60%{    color: transparent; }
+            99%{    color:transparent;  }
+            100%{   color: red;    }
+            
+        }
+    
+    </style>
+    
+{{end}}
+
+
+{{define "content"}}
+    <div class="container">
+        <div class="col">
+            <span class="blinking">This is Homepage!</span>
+            <p>
+                {{if ne (.IP) "" }}
+                Your IP Address is {{.IP}}.
+                {{else}}
+                I dont know your IP address.
+                {{end}}
+            </p>
+            <!--
+            <p>{{index .Data "child"}}</p>
+                <p>{{.Data}}</p>
+            -->
+        </div>
+    </div>
+{{end}}
