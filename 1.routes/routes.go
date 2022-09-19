@@ -27,3 +27,43 @@ func RouteHome() http.Handler {
 	mux.Get("/", handlers.Home)
 	return mux
 }
+
+func RouteAbout() http.Handler {
+	mux := chi.NewRouter()
+
+	//use middlewares
+	mux.Use(middleware.Recoverer)
+	mux.Use(handlers.CSRF)
+	mux.Use(handlers.SessionLoad)
+	//------------end
+
+	//let application to use the main root files (eg. images)
+	dir := http.Dir("./")
+	fileServer := http.FileServer(dir)
+	stripPrefix := http.StripPrefix("/", fileServer)
+	mux.Handle("/*", stripPrefix)
+	//------------end
+
+	mux.Get("/about", handlers.About)
+	return mux
+}
+
+func RouteContact() http.Handler {
+	mux := chi.NewRouter()
+
+	//use middlewares
+	mux.Use(middleware.Recoverer)
+	mux.Use(handlers.CSRF)
+	mux.Use(handlers.SessionLoad)
+	//------------end
+
+	//let application to use the main root files (eg. images)
+	dir := http.Dir("./")
+	fileServer := http.FileServer(dir)
+	stripPrefix := http.StripPrefix("/", fileServer)
+	mux.Handle("/*", stripPrefix)
+	//------------end
+
+	mux.Get("/contact", handlers.Contact)
+	return mux
+}

@@ -36,4 +36,12 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	render.Renderer(w, "home.page.html", data)
 }
 
+func About(w http.ResponseWriter, r *http.Request) {
+	render.Renderer(w, "about.page.html", nil)
+}
+
+func Contact(w http.ResponseWriter, r *http.Request) {
+	render.Renderer(w, "contact.page.html", nil)
+}
+
 // END------------------------------------------------------------------------------
