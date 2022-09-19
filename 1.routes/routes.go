@@ -17,6 +17,6 @@ func RouteHome() http.Handler {
 	mux.Use(handlers.SessionLoad)
 	//------------end
 
-	mux.Get("/home", handlers.Home)
+	mux.Get("/", handlers.Home)
 	return mux
 }
