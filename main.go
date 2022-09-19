@@ -35,7 +35,7 @@ func main() {
 	fmt.Println("Server is running on port 8080")
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: routes.RouteHome(),
+		Handler: routes.Routes(),
 	}
 	err := server.ListenAndServe()
 	render.Scream(err)

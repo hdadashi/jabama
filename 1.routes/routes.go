@@ -10,7 +10,7 @@ import (
 
 var mux = chi.NewRouter()
 
-func RouteHome() http.Handler {
+func Routes() http.Handler {
 	//use middlewares
 	mux.Use(middleware.Recoverer)
 	mux.Use(handlers.CSRF)
@@ -27,5 +27,7 @@ func RouteHome() http.Handler {
 	mux.Get("/", handlers.RouteFinder)
 	mux.Get("/about", handlers.RouteFinder)
 	mux.Get("/contact", handlers.RouteFinder)
+	mux.Get("/rooms/general", handlers.RouteFinder)
+	mux.Get("/rooms/vip", handlers.RouteFinder)
 	return mux
 }

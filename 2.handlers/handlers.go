@@ -42,6 +42,12 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 	if requestURL == "/about" {
 		render.Renderer(w, "about.page.html", nil)
 	}
+	if requestURL == "/rooms/general" {
+		render.Renderer(w, "general.page.html", nil)
+	}
+	if requestURL == "/rooms/vip" {
+		render.Renderer(w, "VIP.page.html", nil)
+	}
 }
 
 // END------------------------------------------------------------------------------
