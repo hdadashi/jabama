@@ -7,23 +7,7 @@
         text-align: center;
         text-justify: inter-word;
         padding-top: 400px;
-        }
-    
-        .blinking{
-            animation:blinkingText 1.2s infinite;
-            font-size: 50px;
-        }
-
-        @keyframes blinkingText{
-            0%{     color: red;    }
-            20%{    color: green;    }
-            49%{    color: blue; }
-            60%{    color: transparent; }
-            99%{    color:transparent;  }
-            100%{   color: red;    }
-            
-        }
-    
+        }    
     </style>
     
 {{end}}
@@ -32,9 +16,17 @@
 {{define "content"}}
     <div class="container">
         <div class="col">
-            <img src="/images/images/outside.png" height="200" width="400" alt="">
-            <!--
-            <span class="blinking">This is Homepage!</span>
+            
+            
+        </div>
+    </div>
+{{end}}
+
+
+
+
+<!--
+            <span>This is Homepage!</span>
             <p>
                 {{if ne (.IP) "" }}
                 Your IP Address is {{.IP}}.
@@ -46,6 +38,3 @@
             <p>{{index .Data "child"}}</p>
                 <p>{{.Data}}</p>
             -->
-        </div>
-    </div>
-{{end}}
