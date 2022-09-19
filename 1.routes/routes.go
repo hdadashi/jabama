@@ -24,8 +24,8 @@ func RouteHome() http.Handler {
 	mux.Handle("/*", stripPrefix)
 	//------------end
 
-	mux.Get("/", handlers.Home)
-	mux.Get("/about", handlers.Home)
-	mux.Get("/contact", handlers.Home)
+	mux.Get("/", handlers.RouteFinder)
+	mux.Get("/about", handlers.RouteFinder)
+	mux.Get("/contact", handlers.RouteFinder)
 	return mux
 }

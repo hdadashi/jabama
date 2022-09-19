@@ -27,7 +27,7 @@ func SessionLoad(next http.Handler) http.Handler {
 // END------------------------------------------------------------------------------
 
 // routes funcs --------------------------------------------------------------------
-func Home(w http.ResponseWriter, r *http.Request) {
+func RouteFinder(w http.ResponseWriter, r *http.Request) {
 
 	data, err := config.GlobVar("input")
 	render.Scream(err)
