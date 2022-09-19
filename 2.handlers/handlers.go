@@ -32,14 +32,14 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	data, err := config.GlobVar("input")
 	render.Scream(err)
 	//get the user ip address
-	request := r.URL.String()
-	if request == "/" {
+	requestURL := r.URL.String()
+	if requestURL == "/" {
 		render.Renderer(w, "home.page.html", data)
 	}
-	if request == "/contact" {
+	if requestURL == "/contact" {
 		render.Renderer(w, "contact.page.html", nil)
 	}
-	if request == "/about" {
+	if requestURL == "/about" {
 		render.Renderer(w, "about.page.html", nil)
 	}
 }
