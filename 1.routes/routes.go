@@ -24,10 +24,13 @@ func Routes() http.Handler {
 	mux.Handle("/*", stripPrefix)
 	//------------end
 
+	//adding routes--
 	mux.Get("/", handlers.RouteFinder)
 	mux.Get("/about", handlers.RouteFinder)
 	mux.Get("/contact", handlers.RouteFinder)
 	mux.Get("/rooms/general", handlers.RouteFinder)
 	mux.Get("/rooms/vip", handlers.RouteFinder)
+	//------------end
+
 	return mux
 }

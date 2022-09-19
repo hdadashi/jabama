@@ -31,7 +31,7 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 
 	data, err := config.GlobVar("input")
 	render.Scream(err)
-	//get the user ip address
+
 	requestURL := r.URL.String()
 	if requestURL == "/" {
 		render.Renderer(w, "home.page.html", data)
