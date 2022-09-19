@@ -32,16 +32,16 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	data, err := config.GlobVar("input")
 	render.Scream(err)
 	//get the user ip address
-	data.IP = r.RemoteAddr
-	render.Renderer(w, "home.page.html", data)
-}
-
-func About(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, "about.page.html", nil)
-}
-
-func Contact(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, "contact.page.html", nil)
+	request := r.URL.String()
+	if request == "/" {
+		render.Renderer(w, "home.page.html", data)
+	}
+	if request == "/contact" {
+		render.Renderer(w, "contact.page.html", nil)
+	}
+	if request == "/about" {
+		render.Renderer(w, "about.page.html", nil)
+	}
 }
 
 // END------------------------------------------------------------------------------
