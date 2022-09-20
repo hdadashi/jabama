@@ -1,0 +1,39 @@
+
+{{template "layout" .}}
+
+{{define "css"}}
+    
+    <style>
+        .column{
+        float: left;
+        width: 25%;
+        }  
+        .required:after {
+        content:" *";
+        color: red;
+        display:inline;
+        }
+    </style>
+    
+{{end}}
+
+
+{{define "content"}}
+
+<form>
+    <div class="mb-3 column" style="padding-left: 25px;">
+      <label for="sdate" class="form-label required">Starting Date</label>
+      <input type="date" class="form-control" id="sdate" aria-describedby="startDateHelp" 
+      name="sdate" placeholder="تاریخ شروع اقامت خود را وارد کنید" required="" oninvalid="this.setCustomValidity('لطفا تاریخ را به درستی وارد نمایید')">
+    </div>
+    <br><br><br><br>
+    <div class="mb-3 column" style="padding-left: 25px;">
+      <label for="edate" class="form-label required">Ending Date</label>
+      <input type="date" class="form-control" id="edate" name="edate"
+       placeholder="تاریخ پایان اقامت خود را وارد کنید" required="" oninvalid="this.setCustomValidity('لطفا تاریخ را به درستی وارد نمایید')">
+    </div>
+    <br><br><br><br>
+    <button type="submit" class="btn btn-primary " style="margin: 0px 25px;">Submit</button>
+  </form>
+
+{{end}}
