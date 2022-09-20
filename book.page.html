@@ -1,0 +1,51 @@
+
+{{template "layout" .}}
+
+{{define "css"}}
+    
+    <style>
+        .column{
+        float: left;
+        width: 25%;
+        }  
+        .required:after {
+        content:" *";
+        color: red;
+        display:inline;
+        }
+    </style>
+    
+{{end}}
+
+
+{{define "content"}}
+
+<form method="post" action="/bookDone">
+    <div class="mb-3 column" style="padding-left: 25px;">
+      <label for="name" class="form-label required">First Name</label>
+      <input type="text" class="form-control" id="name" aria-describedby="nameHelp" 
+      name="name" placeholder="نام خود را وارد کنید" required="" oninvalid="this.setCustomValidity('لطفا نام را به درستی وارد نمایید')">
+    </div>
+    <br><br><br><br>
+    <div class="mb-3 column" style="padding-left: 25px;">
+        <label for="lname" class="form-label required">Last Name</label>
+        <input type="text" class="form-control" id="lname" aria-describedby="lnameHelp" 
+        name="name" placeholder="نام خانوادگی خود را وارد کنید" required="" oninvalid="this.setCustomValidity('لطفا نام خانوادگی را به درستی وارد نمایید')">
+      </div>
+    <br><br><br><br>
+    <div class="mb-3 column" style="padding-left: 25px;">
+        <label for="email" class="form-label required">Email</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" 
+        name="email" placeholder="ایمیل خود را وارد کنید" required="" oninvalid="this.setCustomValidity('لطفا ایمیل را به درستی وارد نمایید')">
+      </div>
+      <br><br><br><br>
+      <div class="mb-3 column" style="padding-left: 25px;">
+          <label for="phone" class="form-label required">Phone Number</label>
+          <input type="text" class="form-control" id="phone" aria-describedby="phoneHelp" 
+          name="phone" placeholder="شماره تماس خود را وارد کنید" required="" oninvalid="this.setCustomValidity('لطفا شماره تماس را به درستی وارد نمایید')">
+        </div>
+        <br><br><br><br>
+    <button type="submit" class="btn btn-primary " style="margin: 0px 25px;">Submit</button>
+  </form>
+
+{{end}}
