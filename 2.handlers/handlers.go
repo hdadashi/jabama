@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	render "github.com/hdadashi/jabama/3.render"
@@ -54,6 +55,11 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 	if requestURL == "/book" {
 		render.Renderer(w, "book.page.html", nil)
 	}
+}
+
+func PostRoute(w http.ResponseWriter, r *http.Request) {
+	name := r.Header.Get("name")
+	fmt.Println(name)
 }
 
 // END------------------------------------------------------------------------------
