@@ -30,6 +30,7 @@ func Routes() http.Handler {
 	mux.Get("/contact", handlers.RouteFinder)
 	mux.Get("/rooms/general", handlers.RouteFinder)
 	mux.Get("/rooms/vip", handlers.RouteFinder)
+	mux.Get("/book", handlers.RouteFinder)
 	//------------end
 
 	return mux

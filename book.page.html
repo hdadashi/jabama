@@ -1,0 +1,31 @@
+
+{{template "layout" .}}
+
+{{define "css"}}
+    
+    <style>
+        .column{
+        float: left;
+        width: 25%;
+        }  
+    </style>
+    
+{{end}}
+
+
+{{define "content"}}
+
+<form>
+    <div class="mb-3 column" style="padding-left: 25px;">
+      <label for="sdate" class="form-label">Starting Date</label>
+      <input type="date" class="form-control" id="sdate" aria-describedby="startDateHelp" name="sdate" placeholder="تاریخ شروع اقامت خود را وارد کنید">
+    </div>
+    <div class="mb-3 column" style="padding-left: 25px;">
+      <label for="edate" class="form-label">Ending Date</label>
+      <input type="date" class="form-control" id="edate" name="edate" placeholder="تاریخ پایان اقامت خود را وارد کنید">
+    </div>
+    <br><br><br><br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+{{end}}
