@@ -1,42 +1,25 @@
+{{template "layout" .}} {{define "css"}}
 
-{{template "layout" .}}
+<style>
+  .col {
+    text-align: center;
+    text-justify: inter-word;
+    padding-top: 400px;
+  }
+  .room-image {
+    max-width: 50%;
+  }
+</style>
 
-{{define "css"}}
-    
-    <style>
-        .col{
-        text-align: center;
-        text-justify: inter-word;
-        padding-top: 400px;
-        }    
-        .room-image{
-            max-width: 50%;
-        }
-    </style>
-    
-{{end}}
-
-
-{{define "content"}}
-
+{{end}} {{define "content"}}
 
 <main class="about">
-    <h1>درباره ما</h1>
+  <h1>درباره ما</h1>
 
+  <section>
+    <p>&emsp; "ما بهترینیم!!!"</p>
 
-    <section>
-
-        <p>
-            &emsp; "ما بهترینیم!!!"
-        </p>
-
-        <p>
-            &emsp; "ما عالی هستیم!!!"
-        </p>
-
-
-    </section>
-
+    <p>&emsp; "ما عالی هستیم!!!"</p>
+  </section>
 </main>
 {{end}}
-

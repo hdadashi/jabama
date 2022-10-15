@@ -1,33 +1,32 @@
-{{template "layout" .}}
+{{template "layout" .}} {{define "css"}}
 
-{{define "css"}}
-    
-    <style>
-        .col{
-        text-align: center;
-        text-justify: inter-word;
-        padding-top: 400px;
-        }    
-        .room-image{
-            max-width: 50%;
-        }
-    </style>
-    
-{{end}}
+<style>
+  .col {
+    text-align: center;
+    text-justify: inter-word;
+    padding-top: 400px;
+  }
+  .room-image {
+    max-width: 50%;
+  }
+</style>
 
-
-{{define "content"}}
+{{end}} {{define "content"}}
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <img src="/images/room-images/generals-quarters.png" class="img-fluid img-thumbnail mx-auto d-block room-image" alt="general Room">
-        </div>
-    </div>
-</div>
-
   <div class="row">
-    <div style="text-align: center; padding-top:25px">
-        <a href="/availability" class="btn btn-success">Check Availability</a>
+    <div class="col">
+      <img
+        src="/images/room-images/generals-quarters.png"
+        class="img-fluid img-thumbnail mx-auto d-block room-image"
+        alt="general Room"
+      />
     </div>
   </div>
+</div>
+
+<div class="row">
+  <div style="text-align: center; padding-top: 25px">
+    <a href="/availability" class="btn btn-success">Check Availability</a>
+  </div>
+</div>
 {{end}}
