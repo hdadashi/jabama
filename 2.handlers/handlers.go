@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
@@ -14,9 +15,9 @@ func CSRF(next http.Handler) http.Handler {
 	csrf := nosurf.New(next)
 	csrf.SetBaseCookie(http.Cookie{
 		HttpOnly: true,
-		Path:     "/home",
+		Path:     "/",
 		Secure:   false,
-		SameSite: http.SameSiteStrictMode,
+		SameSite: http.SameSiteLaxMode,
 	})
 	return csrf
 }
@@ -56,9 +57,11 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 		render.Renderer(w, r, "availability.page.html", csrf)
 	}
 	if requestURL == "/postAvailability" {
-		/*start := r.Form.Get("sdate")
-		end := r.Form.Get("edate")*/
-		w.Write([]byte("Yo, sup?"))
+		start := r.Form.Get("sdate")
+		end := r.Form.Get("edate")
+		start = strings.ReplaceAll(start, "-", "")
+		end = strings.ReplaceAll(end, "-", "")
+		w.Write([]byte(fmt.Sprintf("start is: %s and end is: %s and ", start, end)))
 	}
 	if requestURL == "/book" {
 		render.Renderer(w, r, "book.page.html", nil)

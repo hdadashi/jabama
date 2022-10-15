@@ -31,7 +31,6 @@ func Renderer(w http.ResponseWriter, r *http.Request, tmpl string, tempData *Tem
 
 		Scream(err)
 		ts, _ = ts.ParseGlob("./*.layout.html")
-
 		if name == tmpl {
 			ts.Execute(w, tempData)
 		}
