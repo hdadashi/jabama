@@ -14,9 +14,9 @@ func CSRF(next http.Handler) http.Handler {
 	csrf := nosurf.New(next)
 	csrf.SetBaseCookie(http.Cookie{
 		HttpOnly: true,
-		Path:     "/home",
+		Path:     "/",
 		Secure:   false,
-		SameSite: http.SameSiteStrictMode,
+		SameSite: http.SameSiteLaxMode,
 	})
 	return csrf
 }
@@ -32,28 +32,32 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 
 	data, err := config.GlobVar("input")
 	render.Scream(err)
-
+	var csrf *render.TemplateData = new(render.TemplateData)
+	csrf.CSRF = nosurf.Token(r)
 	requestURL := r.URL.String()
 	if requestURL == "/" {
-		render.Renderer(w, "home.page.html", data)
+		render.Renderer(w, r, "home.page.html", data)
 	}
 	if requestURL == "/contact" {
-		render.Renderer(w, "contact.page.html", nil)
+		render.Renderer(w, r, "contact.page.html", nil)
 	}
 	if requestURL == "/about" {
-		render.Renderer(w, "about.page.html", nil)
+		render.Renderer(w, r, "about.page.html", nil)
 	}
 	if requestURL == "/rooms/general" {
-		render.Renderer(w, "general.page.html", nil)
+		render.Renderer(w, r, "general.page.html", nil)
 	}
 	if requestURL == "/rooms/vip" {
-		render.Renderer(w, "VIP.page.html", nil)
+		render.Renderer(w, r, "VIP.page.html", nil)
 	}
 	if requestURL == "/availability" {
-		render.Renderer(w, "availability.page.html", nil)
+		render.Renderer(w, r, "availability.page.html", csrf)
+	}
+	if requestURL == "/postAvailability" {
+		w.Write([]byte("yo, sup bro?????"))
 	}
 	if requestURL == "/book" {
-		render.Renderer(w, "book.page.html", nil)
+		render.Renderer(w, r, "book.page.html", nil)
 	}
 }
 

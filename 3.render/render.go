@@ -19,10 +19,11 @@ type TemplateData struct {
 
 var functions = template.FuncMap{}
 
-func Renderer(w http.ResponseWriter, tmpl string, tempData *TemplateData) {
+func Renderer(w http.ResponseWriter, r *http.Request, tmpl string, tempData *TemplateData) {
 
 	pages, err := filepath.Glob("./*.page.html")
 	Scream(err)
+
 	//parsing pages and layouts
 	for _, page := range pages {
 
