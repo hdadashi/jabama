@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -35,6 +36,7 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 	var csrf *render.TemplateData = new(render.TemplateData)
 	csrf.CSRF = nosurf.Token(r)
 	requestURL := r.URL.String()
+
 	if requestURL == "/" {
 		render.Renderer(w, r, "home.page.html", data)
 	}
@@ -53,6 +55,16 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 	if requestURL == "/availability" {
 		render.Renderer(w, r, "availability.page.html", csrf)
 	}
+	if requestURL == "/availabilityJSON" {
+		resp := new(JSONresponse)
+		resp.OK = true
+		resp.Message = "Available!"
+		output, err := json.MarshalIndent(resp, "", "     ")
+
+		render.Scream(err)
+
+		w.Write(output)
+	}
 	if requestURL == "/postAvailability" {
 		w.Write([]byte("yo, sup bro?????"))
 	}
@@ -67,3 +79,7 @@ func PostRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 // END------------------------------------------------------------------------------
+type JSONresponse struct {
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
+}
