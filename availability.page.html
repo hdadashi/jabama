@@ -46,6 +46,28 @@
   <button type="submit" class="btn btn-primary" style="margin: 0px 25px">
     Submit
   </button>
+  <button type="button" onclick="custom()">Check Availability</button>
 </form>
+<script>
+  async function custom() {
+    const { value: formValues } = await Swal.fire({
+      title: "Check Reservation Date",
+      html:
+        '<label for="stdate" class="form-label required">Start Date</label>' +
+        '<input id="stdate" class="swal2-input">' +
+        '<label for="endate" class="form-label required">End Date</label>' +
+        '<input label="End Date" id="endate" class="swal2-input">',
+      backdrop: false,
+      focusConfirm: false,
+      showCancelButton: true,
 
+      preConfirm: () => {
+        return [
+          document.getElementById("swal-input1").value,
+          document.getElementById("swal-input2").value,
+        ];
+      },
+    });
+  }
+</script>
 {{end}}
