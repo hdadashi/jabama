@@ -63,11 +63,14 @@
 
       preConfirm: () => {
         return [
-          document.getElementById("swal-input1").value,
-          document.getElementById("swal-input2").value,
+          document.getElementById("stdate").value,
+          document.getElementById("endate").value,
         ];
       },
     });
+  }
+  if (formValues) {
+    Swal.fire(JSON.stringify(formValues));
   }
 </script>
 {{end}}
