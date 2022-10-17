@@ -23,6 +23,7 @@ func Renderer(w http.ResponseWriter, r *http.Request, tmpl string, tempData *Tem
 
 	pages, err := filepath.Glob("./*.page.html")
 	Scream(err)
+
 	//parsing pages and layouts
 	for _, page := range pages {
 
