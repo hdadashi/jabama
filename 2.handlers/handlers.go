@@ -36,8 +36,6 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 	csrf.CSRF = nosurf.Token(r)
 
 	render.Scream(err)
-	var csrf *render.TemplateData = new(render.TemplateData)
-	csrf.CSRF = nosurf.Token(r)
 	requestURL := r.URL.String()
 
 	if requestURL == "/" {
