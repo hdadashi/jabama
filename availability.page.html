@@ -72,11 +72,14 @@
         if (result.dismiss !== Swal.DismissReason.cancel) {
           if (result.value !== "") {
             console.log(result);
+            document.getElementById("sdate").value = result[0];
+            document.getElementById("edate").value = result[1];
+
             fetch("/availabilityJSON")
               .then((Response) => Response.json())
               .then((data) => {
                 console.log(data);
-                console.log(data.ok)
+                console.log(data.ok);
               });
           } else {
             console.log(false);
