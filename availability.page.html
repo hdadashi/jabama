@@ -25,7 +25,6 @@
       aria-describedby="startDateHelp"
       name="sdate"
       placeholder="تاریخ شروع اقامت خود را وارد کنید"
-      
       oninvalid="this.setCustomValidity('لطفا تاریخ را به درستی وارد نمایید')"
     />
   </div>
@@ -38,7 +37,6 @@
       id="edate"
       name="edate"
       placeholder="تاریخ پایان اقامت خود را وارد کنید"
-      
       oninvalid="this.setCustomValidity('لطفا تاریخ را به درستی وارد نمایید')"
     />
   </div>
@@ -46,6 +44,49 @@
   <button type="submit" class="btn btn-primary" style="margin: 0px 25px">
     Submit
   </button>
+  <button type="button" onclick="custom({msg:'', title:''})">
+    Check Availability
+  </button>
+
+  <script>
+    async function custom(c) {
+      const { value: result } = await Swal.fire({
+        title: "Check Availability",
+        html:
+          '<label for="stdate" class="form-label required">Start Date</label>' +
+          '<input type="date" id="stdate" class="swal2-input"><br />' +
+          '<label for="endate" class="form-label required">End Date</label>' +
+          '<input type="date" id="endate" class="swal2-input">',
+        focusConfirm: false,
+        backdrop: false,
+        showCancelButton: true,
+        preConfirm: () => {
+          return [
+            document.getElementById("stdate").value,
+            document.getElementById("endate").value,
+          ];
+        },
+      });
+
+      if (result) {
+        if (result.dismiss !== Swal.DismissReason.cancel) {
+          if (result.value !== "") {
+            console.log(result);
+            fetch("/availabilityJSON")
+              .then((Response) => Response.json())
+              .then((data) => {
+                console.log(data);
+                console.log(data.ok)
+              });
+          } else {
+            console.log(false);
+          }
+        } else {
+          console.log(false);
+        }
+      }
+    }
+  </script>
 </form>
 
 {{end}}

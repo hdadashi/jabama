@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
@@ -62,6 +63,16 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 		start = strings.ReplaceAll(start, "-", "")
 		end = strings.ReplaceAll(end, "-", "")
 		w.Write([]byte(fmt.Sprintf("start is: %s and end is: %s and ", start, end)))
+	}
+	if requestURL == "/availabilityJSON" {
+		resp := new(JSONresponse)
+		resp.OK = true
+		resp.Message = "Available!"
+		out, err := json.MarshalIndent(resp, "", "     ")
+		render.Scream(err)
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.Write(out)
 	}
 	if requestURL == "/book" {
 		render.Renderer(w, r, "book.page.html", nil)
