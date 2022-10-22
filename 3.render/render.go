@@ -11,13 +11,18 @@ import (
 type TemplateData struct {
 	StringMap map[string]string
 	IntMap    map[string]int
-	Data      map[string]interface{}
-	CSRF      string
-	Flash     string
-	Warning   string
-	Error     string
-	IP        string
-	Form      *forms.Form
+	Data      struct {
+		Name  string
+		Lname string
+		Email string
+		Phone string
+	}
+	CSRF    string
+	Flash   string
+	Warning string
+	Error   string
+	IP      string
+	Form    *forms.Form
 }
 
 var functions = template.FuncMap{}

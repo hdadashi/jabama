@@ -9,6 +9,7 @@ import (
 	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
 	"github.com/hdadashi/jabama/forms"
+	"github.com/hdadashi/jabama/models"
 	"github.com/justinas/nosurf"
 )
 
@@ -80,7 +81,26 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 		render.Renderer(w, r, "book.page.html", csrf)
 	}
 	if requestURL == "/PostBook" {
+		err := r.ParseForm()
+		render.Scream(err)
 
+		reservation := models.Reservation{
+			Name:  r.Form.Get("name"),
+			Lname: r.Form.Get("lname"),
+			Email: r.Form.Get("email"),
+			Phone: r.Form.Get("phone"),
+		}
+		form := forms.New(r.PostForm)
+		form.Has("name", r)
+
+		if !form.Valid() {
+			var data *render.TemplateData = new(render.TemplateData)
+			data.CSRF = nosurf.Token(r)
+			data.Data = reservation
+			data.Form = form
+			render.Renderer(w, r, "book.page.html", data)
+		}
+		return
 	}
 }
 
