@@ -8,6 +8,7 @@ import (
 
 	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
+	"github.com/hdadashi/jabama/forms"
 	"github.com/justinas/nosurf"
 )
 
@@ -35,6 +36,7 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 	data, err := config.GlobVar("input")
 	var csrf *render.TemplateData = new(render.TemplateData)
 	csrf.CSRF = nosurf.Token(r)
+	csrf.Form = forms.New(nil)
 
 	render.Scream(err)
 	requestURL := r.URL.String()
@@ -75,7 +77,10 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 		w.Write(out)
 	}
 	if requestURL == "/book" {
-		render.Renderer(w, r, "book.page.html", nil)
+		render.Renderer(w, r, "book.page.html", csrf)
+	}
+	if requestURL == "/PostBook" {
+
 	}
 }
 

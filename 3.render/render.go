@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"path/filepath"
 	"text/template"
+
+	"github.com/hdadashi/jabama/forms"
 )
 
 type TemplateData struct {
@@ -15,6 +17,7 @@ type TemplateData struct {
 	Warning   string
 	Error     string
 	IP        string
+	Form      *forms.Form
 }
 
 var functions = template.FuncMap{}

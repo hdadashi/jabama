@@ -33,6 +33,7 @@ func Routes() http.Handler {
 	mux.Get("/book", handlers.RouteFinder)
 	mux.Get("/availability", handlers.RouteFinder)
 
+	mux.Post("/PostBook", handlers.RouteFinder)
 	mux.Post("/availabilityJSON", handlers.RouteFinder)
 	mux.Post("/postAvailability", handlers.RouteFinder)
 	mux.Post("/bookDone", handlers.PostRoute)

@@ -15,6 +15,7 @@
 {{end}} {{define "content"}}
 
 <form method="post" action="/bookDone">
+  <input id="csrf" type="hidden" name="csrf_token" value="{{.CSRF}}" />
   <div class="mb-3 column" style="padding-left: 25px">
     <label for="name" class="form-label required">First Name</label>
     <input
