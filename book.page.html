@@ -14,10 +14,10 @@
 
 {{end}} {{define "content"}}
 
-<form method="post" action="/bookDone">
+<form method="post" action="/PostBook">
   <input id="csrf" type="hidden" name="csrf_token" value="{{.CSRF}}" />
   <div class="mb-3 column" style="padding-left: 25px">
-    <label for="name" class="form-label required">First Name</label>
+    <label for="name" class="form-label">First Name</label>
     <input
       type="text"
       class="form-control"
@@ -25,13 +25,12 @@
       aria-describedby="nameHelp"
       name="name"
       placeholder="نام خود را وارد کنید"
-      required=""
       oninvalid="this.setCustomValidity('لطفا نام را به درستی وارد نمایید')"
     />
   </div>
   <br /><br /><br /><br />
   <div class="mb-3 column" style="padding-left: 25px">
-    <label for="lname" class="form-label required">Last Name</label>
+    <label for="lname" class="form-label">Last Name</label>
     <input
       type="text"
       class="form-control"
@@ -39,13 +38,12 @@
       aria-describedby="lnameHelp"
       name="lname"
       placeholder="نام خانوادگی خود را وارد کنید"
-      required=""
       oninvalid="this.setCustomValidity('لطفا نام خانوادگی را به درستی وارد نمایید')"
     />
   </div>
   <br /><br /><br /><br />
   <div class="mb-3 column" style="padding-left: 25px">
-    <label for="email" class="form-label required">Email</label>
+    <label for="email" class="form-label">Email</label>
     <input
       type="email"
       class="form-control"
@@ -53,13 +51,12 @@
       aria-describedby="emailHelp"
       name="email"
       placeholder="ایمیل خود را وارد کنید"
-      required=""
       oninvalid="this.setCustomValidity('لطفا ایمیل را به درستی وارد نمایید')"
     />
   </div>
   <br /><br /><br /><br />
   <div class="mb-3 column" style="padding-left: 25px">
-    <label for="phone" class="form-label required">Phone Number</label>
+    <label for="phone" class="form-label">Phone Number</label>
     <input
       type="text"
       class="form-control"
@@ -67,7 +64,6 @@
       aria-describedby="phoneHelp"
       name="phone"
       placeholder="شماره تماس خود را وارد کنید"
-      required=""
       oninvalid="this.setCustomValidity('لطفا شماره تماس را به درستی وارد نمایید')"
     />
   </div>
