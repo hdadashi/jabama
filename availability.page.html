@@ -14,8 +14,8 @@
 
 {{end}} {{define "content"}}
 
-<form action="/postAvailability" method="post">
-  <input type="hidden" name="csrf_token" value="{{.CSRF}}" />
+<form id="availabilityJSON" action="/postAvailability" method="post">
+  <input id="csrf" type="hidden" name="csrf_token" value="{{.CSRF}}" />
   <div class="mb-3 column" style="padding-left: 25px">
     <label for="sdate" class="form-label required">Starting Date</label>
     <input
@@ -71,15 +71,25 @@
       if (result) {
         if (result.dismiss !== Swal.DismissReason.cancel) {
           if (result.value !== "") {
-            console.log(result);
             document.getElementById("sdate").value = result[0];
             document.getElementById("edate").value = result[1];
 
-            fetch("/availabilityJSON")
+            let form = document.getElementById("availabilityJSON");
+            let formData = new FormData(form);
+            formData["csrf_token"] = "{{.CSRF}}";
+
+            fetch("/availabilityJSON", {
+              method: "post",
+              headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": "true",
+              },
+              body: formData,
+            })
               .then((Response) => Response.json())
               .then((data) => {
                 console.log(data);
-                console.log(data.ok);
+                console.log(data.message);
               });
           } else {
             console.log(false);
