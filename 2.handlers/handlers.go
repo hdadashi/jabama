@@ -67,7 +67,7 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 	if requestURL == "/availabilityJSON" {
 		resp := new(JSONresponse)
 		resp.OK = true
-		resp.Message = "Available!"
+		resp.Message = r.PostFormValue("name") + ", its Available!"
 		out, err := json.MarshalIndent(resp, "", "     ")
 		render.Scream(err)
 		w.Header().Set("Content-Type", "application/json")

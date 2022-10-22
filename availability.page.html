@@ -76,14 +76,11 @@
 
             let form = document.getElementById("availabilityJSON");
             let formData = new FormData(form);
-            formData["csrf_token"] = "{{.CSRF}}";
+            formData.append("name", "Hossein");
+            formData.append("password", "Hossein123");
 
             fetch("/availabilityJSON", {
               method: "post",
-              headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": "true",
-              },
               body: formData,
             })
               .then((Response) => Response.json())
