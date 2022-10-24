@@ -93,9 +93,10 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 			Phone: r.Form.Get("phone"),
 		}
 		form := forms.New(r.PostForm)
-		form.Has("name", r)
+		form.Required("name", "lname", "email")
+		form.MinLength("name", 3, r)
 
-		if !form.Valid() {
+		if form.Valid() {
 			var data *render.TemplateData = new(render.TemplateData)
 			data.CSRF = nosurf.Token(r)
 			data.Data = reservation

@@ -22,15 +22,17 @@
     {{with .Form.Errors.Get "name"}}
     <label class="text-danger">{{.}}</label> {{end}} <input type="text"
     class="form-control {{with .Form.Errors.Get "name"}} is-invalid {{end}}"
-    id="name" aria-describedby="nameHelp" name="name" value="{{$res.Name}}" placeholder="نام خود را
-    وارد کنید" />
+    id="name" aria-describedby="nameHelp" name="name" value="{{$res.Name}}"
+    placeholder="نام خود را وارد کنید" />
   </div>
   <br /><br /><br /><br />
   <div class="mb-3 column" style="padding-left: 25px">
     <label for="lname" class="form-label">Last Name</label>
+    {{with .Form.Errors.Get "lname"}}
+    <label class="text-danger">{{.}}</label> {{end}}
     <input
       type="text"
-      class="form-control"
+      class="form-control {{with .Form.Errors.Get "lname"}} is-invalid {{end}}"
       id="lname"
       aria-describedby="lnameHelp"
       name="lname"
@@ -42,15 +44,16 @@
   <br /><br /><br /><br />
   <div class="mb-3 column" style="padding-left: 25px">
     <label for="email" class="form-label">Email</label>
+    {{with .Form.Errors.Get "email"}}
+    <label class="text-danger">{{.}}</label> {{end}}
     <input
       type="email"
-      class="form-control"
+      class="form-control {{with .Form.Errors.Get "email"}} is-invalid {{end}}"
       id="email"
       aria-describedby="emailHelp"
       name="email"
       value="{{$res.Email}}"
       placeholder="ایمیل خود را وارد کنید"
-      oninvalid="this.setCustomValidity('لطفا ایمیل را به درستی وارد نمایید')"
     />
   </div>
   <br /><br /><br /><br />
