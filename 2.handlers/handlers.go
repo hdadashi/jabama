@@ -78,6 +78,8 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 		w.Write(out)
 	}
 	if requestURL == "/book" {
+		var emptyReservation models.Reservation
+		csrf.Data = emptyReservation
 		render.Renderer(w, r, "book.page.html", csrf)
 	}
 	if requestURL == "/PostBook" {

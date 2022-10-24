@@ -31,7 +31,6 @@ func main() {
 
 	config.PassingSession = sessionManager
 
-	//http.HandleFunc("/home", handlers.Home)
 	fmt.Println("Server is running on port 8080")
 	server := &http.Server{
 		Addr:    ":8080",
