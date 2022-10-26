@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/asaskevich/govalidator"
 )
 
 // Creates a custom form struct and embeds a url.Values object
@@ -15,7 +17,7 @@ type Form struct {
 
 // Returns true if there are no errors, otherwise returns false
 func (f *Form) Valid() bool {
-	return len(f.Errors) != 0
+	return len(f.Errors) == 0
 }
 
 // Initializes a form struct
@@ -53,4 +55,11 @@ func (f *Form) Has(field string, r *http.Request) bool {
 		f.Errors.Add(field, "This field cannot be empty")
 	}
 	return checker != ""
+}
+
+// Checks for valid email address
+func (f *Form) IsEmail(field string) {
+	if !govalidator.IsEmail(f.Get(field)) {
+		f.Errors.Add(field, "Invalid email address")
+	}
 }

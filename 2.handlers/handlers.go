@@ -95,12 +95,14 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 		form := forms.New(r.PostForm)
 		form.Required("name", "lname", "email")
 		form.MinLength("name", 3, r)
-
+		form.IsEmail("email")
+		var data *render.TemplateData = new(render.TemplateData)
+		data.CSRF = nosurf.Token(r)
+		data.Data = reservation
+		data.Form = form
 		if form.Valid() {
-			var data *render.TemplateData = new(render.TemplateData)
-			data.CSRF = nosurf.Token(r)
-			data.Data = reservation
-			data.Form = form
+			render.Renderer(w, r, "reservationSummary.page.html", data)
+		} else {
 			render.Renderer(w, r, "book.page.html", data)
 		}
 		return

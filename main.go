@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"net/http"
 	"time"
@@ -9,11 +10,14 @@ import (
 	routes "github.com/hdadashi/jabama/1.routes"
 	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
+	"github.com/hdadashi/jabama/models"
 )
 
 var sessionManager *scs.SessionManager
 
 func main() {
+	//Adding the reservation data to the session
+	gob.Register(models.Reservation{})
 
 	sessionManager = scs.New()
 

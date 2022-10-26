@@ -1,0 +1,9 @@
+.column {
+    float: left;
+    width: 25%;
+  }
+  .required:after {
+    content: " *";
+    color: red;
+    display: inline;
+  }

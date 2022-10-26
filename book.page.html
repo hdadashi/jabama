@@ -1,16 +1,6 @@
 {{template "layout" .}} {{define "css"}}
 
-<style>
-  .column {
-    float: left;
-    width: 25%;
-  }
-  .required:after {
-    content: " *";
-    color: red;
-    display: inline;
-  }
-</style>
+<link rel="stylesheet" href="book.css">
 
 {{end}} {{define "content"}}
 
@@ -20,10 +10,16 @@
   <div class="mb-3 column" style="padding-left: 25px">
     <label for="name" class="form-label">First Name</label>
     {{with .Form.Errors.Get "name"}}
-    <label class="text-danger">{{.}}</label> {{end}} <input type="text"
-    class="form-control {{with .Form.Errors.Get "name"}} is-invalid {{end}}"
-    id="name" aria-describedby="nameHelp" name="name" value="{{$res.Name}}"
-    placeholder="نام خود را وارد کنید" />
+    <label class="text-danger">{{.}}</label> {{end}}
+    <input
+      type="text"
+      class='form-control {{with .Form.Errors.Get "name"}} is-invalid {{end}}'
+      id="name"
+      aria-describedby="nameHelp"
+      name="name"
+      value="{{$res.Name}}"
+      placeholder="نام خود را وارد کنید"
+    />
   </div>
   <br /><br /><br /><br />
   <div class="mb-3 column" style="padding-left: 25px">
@@ -32,13 +28,12 @@
     <label class="text-danger">{{.}}</label> {{end}}
     <input
       type="text"
-      class="form-control {{with .Form.Errors.Get "lname"}} is-invalid {{end}}"
+      class='form-control {{with .Form.Errors.Get "lname"}} is-invalid {{end}}'
       id="lname"
       aria-describedby="lnameHelp"
       name="lname"
       value="{{$res.Lname}}"
       placeholder="نام خانوادگی خود را وارد کنید"
-      oninvalid="this.setCustomValidity('لطفا نام خانوادگی را به درستی وارد نمایید')"
     />
   </div>
   <br /><br /><br /><br />
@@ -48,7 +43,7 @@
     <label class="text-danger">{{.}}</label> {{end}}
     <input
       type="email"
-      class="form-control {{with .Form.Errors.Get "email"}} is-invalid {{end}}"
+      class='form-control {{with .Form.Errors.Get "email"}} is-invalid {{end}}'
       id="email"
       aria-describedby="emailHelp"
       name="email"
