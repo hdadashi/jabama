@@ -36,8 +36,6 @@ func Routes() http.Handler {
 	mux.Post("/PostBook", handlers.RouteFinder)
 	mux.Post("/availabilityJSON", handlers.RouteFinder)
 	mux.Post("/postAvailability", handlers.RouteFinder)
-	mux.Post("/bookDone", handlers.PostRoute)
-
 	//------------end
 
 	return mux

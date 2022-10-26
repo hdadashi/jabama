@@ -109,11 +109,6 @@ func RouteFinder(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func PostRoute(w http.ResponseWriter, r *http.Request) {
-	name := r.Header.Get("name")
-	fmt.Println(name)
-}
-
 // END------------------------------------------------------------------------------
 type JSONresponse struct {
 	OK      bool   `json:"ok"`
