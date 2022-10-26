@@ -1,7 +1,7 @@
 {{template "layout" .}} {{define "css"}}
 <link rel="stylesheet" href="css/reservationSummary.css" />
 
-{{end}} {{define "content"}}
+{{end}} {{define "content"}} {{$res := .Data}}
 <div class="container">
   <div class="row">
     <div class="col">
@@ -14,7 +14,7 @@
         <tbody>
           <tr>
             <td>Name:</td>
-            <td></td>
+            <td>{{$res.Name}} {{$res.Lname}}</td>
           </tr>
           <tr>
             <td>Arrival:</td>
@@ -26,11 +26,11 @@
           </tr>
           <tr>
             <td>Email:</td>
-            <td></td>
+            <td>{{$res.Email}}</td>
           </tr>
           <tr>
             <td>Phone:</td>
-            <td></td>
+            <td>{{$res.Phone}}</td>
           </tr>
         </tbody>
       </table>
