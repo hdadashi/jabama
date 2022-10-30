@@ -7,6 +7,7 @@ import (
 
 	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
+	"github.com/hdadashi/jabama/driver"
 	"github.com/hdadashi/jabama/forms"
 	"github.com/hdadashi/jabama/models"
 	"github.com/justinas/nosurf"
@@ -32,6 +33,14 @@ func SessionLoad(next http.Handler) http.Handler {
 // END------------------------------------------------------------------------------
 
 // routes funcs --------------------------------------------------------------------
+
+// NewRepo creates a new repository
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
+	return &Repository{
+		App: a,
+		//DB:  dbrepo.NewPostgresRepo(db.SQL, a),
+	}
+}
 
 // Repository is the repository type
 type Repository struct {
@@ -74,8 +83,6 @@ func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	var emptyReservation models.Reservation
-	data.Data = emptyReservation
 	render.Renderer(w, r, "make-reservation.page.tmpl", &render.TemplateData{
 		Form: forms.New(nil),
 		Data: data.Data,
@@ -90,12 +97,6 @@ func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	render.Scream(err)
-	reservation := models.Reservation{
-		Name:  r.Form.Get("name"),
-		Lname: r.Form.Get("lname"),
-		Email: r.Form.Get("email"),
-		Phone: r.Form.Get("phone"),
-	}
 
 	form := forms.New(r.PostForm)
 
@@ -110,7 +111,12 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-
+	reservation := models.Reservation{
+		FirstName: r.Form.Get("first_name"),
+		LastName:  r.Form.Get("last_name"),
+		Email:     r.Form.Get("email"),
+		Phone:     r.Form.Get("phone"),
+	}
 	m.App.Session.Put(r.Context(), "reservation", reservation)
 	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }

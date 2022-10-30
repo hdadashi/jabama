@@ -6,11 +6,12 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	handlers "github.com/hdadashi/jabama/2.handlers"
+	"github.com/hdadashi/jabama/config"
 )
 
 var mux = chi.NewRouter()
 
-func Routes() http.Handler {
+func Routes(app *config.AppConfig) http.Handler {
 	//use middlewares
 	mux.Use(middleware.Recoverer)
 	mux.Use(handlers.CSRF)

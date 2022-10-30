@@ -5,12 +5,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
 	routes "github.com/hdadashi/jabama/1.routes"
+	handlers "github.com/hdadashi/jabama/2.handlers"
 	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
+	"github.com/hdadashi/jabama/driver"
 	"github.com/hdadashi/jabama/models"
 )
 
@@ -18,41 +21,76 @@ var sessionManager *scs.SessionManager
 var app config.AppConfig
 var InfoLog *log.Logger
 var errorLog *log.Logger
+var portNumber string = ":8080"
 
+// main is the main function
 func main() {
-	//Adding the reservation data to the session
+	db, err := run()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.SQL.Close()
+
+	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
+
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes.Routes(&app),
+	}
+
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() (*driver.DB, error) {
+	// what am I going to put in the session
 	gob.Register(models.Reservation{})
+	gob.Register(models.User{})
+	gob.Register(models.Room{})
+	gob.Register(models.RoomRestriction{})
 
-	sessionManager = scs.New()
+	// change this to true when in production
+	app.InProduction = false
 
-	//the time that session lives
-	sessionManager.Lifetime = 1 * time.Hour
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
 
-	//do not encrypt the cookies
-	sessionManager.Cookie.Secure = false
+	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 
-	//sessions do not persist after the browser is closed
-	sessionManager.Cookie.Persist = true
+	// set up the session
+	session := scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
 
-	//کوکی‌ها فقط زمانی که کاربر به صورت معمولی سایت را باز کند در دسترس خواهند بود و هدایت کاربر به سایت از هر طریقی، بدون کوکی انجام می‌شود
-	sessionManager.Cookie.SameSite = http.SameSiteStrictMode
+	app.Session = session
 
-	app.Session = sessionManager
+	// connect to database
+	log.Println("Connecting to database...")
+	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=Hossein password=123456")
+	if err != nil {
+		log.Fatal("Cannot connect to database! Dying...")
+	}
+
+	log.Println("Connected to database!")
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
-		return
+		return nil, err
 	}
 
 	app.TemplateCache = tc
 	app.UseCache = false
 
-	fmt.Println("Server is running on port 8080")
-	server := &http.Server{
-		Addr:    ":8080",
-		Handler: routes.Routes(),
-	}
-	err = server.ListenAndServe()
-	render.Scream(err)
+	repo := handlers.NewRepo(&app, db)
+	handlers.NewHandlers(repo)
+	render.NewRenderer(&app)
+	//helpers.NewHelpers(&app)
+
+	return db, nil
 }
