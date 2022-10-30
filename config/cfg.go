@@ -1,26 +1,20 @@
 package config
 
 import (
-	"errors"
+	"html/template"
+	"log"
 
 	"github.com/alexedwards/scs/v2"
-	render "github.com/hdadashi/jabama/3.render"
 )
 
-var PassingSession *scs.SessionManager
+//var PassingSession *scs.SessionManager
 
-var input render.TemplateData
-
-func GlobVar(VarName string) (*render.TemplateData, error) {
-	if VarName == "input" {
-		input.StringMap = make(map[string]string)
-		input.IntMap = make(map[string]int)
-		input.StringMap["model"] = "Benz"
-		input.CSRF = "Security check!"
-		input.Error = "Error Detected!"
-		input.Flash = "This is a message."
-		input.Warning = "I warn you!"
-		return &input, nil
-	}
-	return nil, errors.New("no variable found")
+// AppConfig holds the application config
+type AppConfig struct {
+	UseCache      bool
+	TemplateCache map[string]*template.Template
+	InfoLog       *log.Logger
+	ErrorLog      *log.Logger
+	InProduction  bool
+	Session       *scs.SessionManager
 }

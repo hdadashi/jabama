@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strings"
 
 	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
@@ -26,87 +25,115 @@ func CSRF(next http.Handler) http.Handler {
 }
 
 func SessionLoad(next http.Handler) http.Handler {
-	return config.PassingSession.LoadAndSave(next)
+	x := *Repo.App.Session
+	return x.LoadAndSave(next)
 }
 
 // END------------------------------------------------------------------------------
 
 // routes funcs --------------------------------------------------------------------
-func RouteFinder(w http.ResponseWriter, r *http.Request) {
 
-	data, err := config.GlobVar("input")
-	var csrf *render.TemplateData = new(render.TemplateData)
-	csrf.CSRF = nosurf.Token(r)
-	csrf.Form = forms.New(nil)
+// Repository is the repository type
+type Repository struct {
+	App *config.AppConfig
+}
 
+// Repo the repository used by the handlers
+var Repo *Repository
+
+var data *render.TemplateData = new(render.TemplateData)
+
+// NewHandlers sets the repository for the handlers
+func NewHandlers(r *Repository) {
+	Repo = r
+}
+
+// Home is the handler for the home page
+func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+	render.Renderer(w, r, "/", &render.TemplateData{})
+}
+
+// About is the handler for the about page
+func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
+	render.Renderer(w, r, "about.page.tmpl", &render.TemplateData{})
+}
+
+// Generals renders the room page
+func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
+	render.Renderer(w, r, "generals.page.tmpl", &render.TemplateData{})
+}
+
+// Majors renders the room page
+func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
+	render.Renderer(w, r, "majors.page.tmpl", &render.TemplateData{})
+}
+
+// Contact renders the contact page
+func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
+	render.Renderer(w, r, "contact.page.tmpl", &render.TemplateData{})
+}
+
+func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
+	var emptyReservation models.Reservation
+	data.Data = emptyReservation
+	render.Renderer(w, r, "make-reservation.page.tmpl", &render.TemplateData{
+		Form: forms.New(nil),
+		Data: data.Data,
+	})
+}
+
+// Availability renders the search availability page
+func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
+	render.Renderer(w, r, "search-availability.page.tmpl", &render.TemplateData{})
+}
+
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
 	render.Scream(err)
-	requestURL := r.URL.String()
+	reservation := models.Reservation{
+		Name:  r.Form.Get("name"),
+		Lname: r.Form.Get("lname"),
+		Email: r.Form.Get("email"),
+		Phone: r.Form.Get("phone"),
+	}
 
-	if requestURL == "/" {
-		render.Renderer(w, r, "home.page.html", data)
-	}
-	if requestURL == "/contact" {
-		render.Renderer(w, r, "contact.page.html", nil)
-	}
-	if requestURL == "/about" {
-		render.Renderer(w, r, "about.page.html", nil)
-	}
-	if requestURL == "/rooms/general" {
-		render.Renderer(w, r, "general.page.html", nil)
-	}
-	if requestURL == "/rooms/vip" {
-		render.Renderer(w, r, "VIP.page.html", nil)
-	}
-	if requestURL == "/availability" {
-		render.Renderer(w, r, "availability.page.html", csrf)
-	}
-	if requestURL == "/postAvailability" {
-		start := r.Form.Get("sdate")
-		end := r.Form.Get("edate")
-		start = strings.ReplaceAll(start, "-", "")
-		end = strings.ReplaceAll(end, "-", "")
-		w.Write([]byte(fmt.Sprintf("start is: %s and end is: %s and ", start, end)))
-	}
-	if requestURL == "/availabilityJSON" {
-		resp := new(JSONresponse)
-		resp.OK = true
-		resp.Message = r.PostFormValue("name") + ", its Available!"
-		out, err := json.MarshalIndent(resp, "", "     ")
-		render.Scream(err)
-		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Credentials", "true")
-		w.Write(out)
-	}
-	if requestURL == "/book" {
-		var emptyReservation models.Reservation
-		csrf.Data = emptyReservation
-		render.Renderer(w, r, "book.page.html", csrf)
-	}
-	if requestURL == "/PostBook" {
-		err := r.ParseForm()
-		render.Scream(err)
+	form := forms.New(r.PostForm)
 
-		reservation := models.Reservation{
-			Name:  r.Form.Get("name"),
-			Lname: r.Form.Get("lname"),
-			Email: r.Form.Get("email"),
-			Phone: r.Form.Get("phone"),
-		}
-		form := forms.New(r.PostForm)
-		form.Required("name", "lname", "email")
-		form.MinLength("name", 3, r)
-		form.IsEmail("email")
-		var data *render.TemplateData = new(render.TemplateData)
-		data.CSRF = nosurf.Token(r)
-		data.Data = reservation
-		data.Form = form
-		if form.Valid() {
-			render.Renderer(w, r, "reservationSummary.page.html", data)
-		} else {
-			render.Renderer(w, r, "book.page.html", data)
-		}
+	form.Required("first_name", "last_name", "email")
+	form.MinLength("first_name", 3, r)
+	form.IsEmail("email")
+
+	if !form.Valid() {
+		render.Renderer(w, r, "make-reservation.page.tmpl", &render.TemplateData{
+			Form: form,
+			Data: data.Data,
+		})
 		return
 	}
+
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
+}
+
+// AvailabilityJSON handles request for availability and sends JSON response
+func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	resp := JSONresponse{
+		OK:      true,
+		Message: "Available!",
+	}
+
+	out, _ := json.MarshalIndent(resp, "", "     ")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
+}
+
+// PostAvailability handles post
+func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
+	start := r.Form.Get("start")
+	end := r.Form.Get("end")
+
+	w.Write([]byte(fmt.Sprintf("start date is %s and end is %s", start, end)))
 }
 
 // END------------------------------------------------------------------------------

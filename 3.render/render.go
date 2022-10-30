@@ -1,11 +1,16 @@
 package render
 
 import (
+	"bytes"
+	"errors"
+	"fmt"
+	"html/template"
 	"net/http"
 	"path/filepath"
-	"text/template"
 
+	"github.com/hdadashi/jabama/config"
 	"github.com/hdadashi/jabama/forms"
+	"github.com/justinas/nosurf"
 )
 
 type TemplateData struct {
@@ -26,26 +31,105 @@ type TemplateData struct {
 }
 
 var functions = template.FuncMap{}
+var app *config.AppConfig
+var pathToTemplates = "./"
 
-func Renderer(w http.ResponseWriter, r *http.Request, tmpl string, tempData *TemplateData) {
+// AddDefaultData adds data for all templates
+func AddDefaultData(td *TemplateData, r *http.Request) *TemplateData {
+	td.Flash = app.Session.PopString(r.Context(), "flash")
+	td.Warning = app.Session.PopString(r.Context(), "warning")
+	td.Error = app.Session.PopString(r.Context(), "error")
+	td.CSRF = nosurf.Token(r)
+	return td
+}
 
-	pages, err := filepath.Glob("./*.page.html")
-	Scream(err)
+// NewRenderer sets the config for the template package
+func NewRenderer(a *config.AppConfig) {
+	app = a
+}
 
-	//parsing pages and layouts
-	for _, page := range pages {
+func Renderer(w http.ResponseWriter, r *http.Request, tmpl string, tempData *TemplateData) error {
 
-		name := filepath.Base(page)
-		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
+	var tc map[string]*template.Template
 
-		Scream(err)
-		ts, _ = ts.ParseGlob("./*.layout.html")
-		if name == tmpl {
-			ts.Execute(w, tempData)
-		}
+	if app.UseCache {
+		// get the template cache from the app config
+		tc = app.TemplateCache
+	} else {
+		tc, _ = CreateTemplateCache()
 	}
 
-	Scream(err)
+	t, ok := tc[tmpl]
+	if !ok {
+		//log.Fatal("Could not get template from template cache")
+		return errors.New("could not get template from cache")
+	}
+	buf := new(bytes.Buffer)
+
+	tempData = AddDefaultData(tempData, r)
+
+	_ = t.Execute(buf, tempData)
+
+	_, err := buf.WriteTo(w)
+	if err != nil {
+		fmt.Println("error writing template to browser", err)
+		return err
+	}
+
+	return nil
+
+	// pages, err := filepath.Glob("./*.page.html")
+	// Scream(err)
+
+	// //parsing pages and layouts
+	// for _, page := range pages {
+
+	// 	name := filepath.Base(page)
+	// 	ts, err := template.New(name).Funcs(functions).ParseFiles(page)
+
+	// 	Scream(err)
+	// 	ts, _ = ts.ParseGlob("./*.layout.html")
+	// 	if name == tmpl {
+	// 		ts.Execute(w, tempData)
+	// 	}
+	// }
+
+	// Scream(err)
+}
+
+// CreateTemplateCache creates a template cache as a map
+func CreateTemplateCache() (map[string]*template.Template, error) {
+
+	myCache := map[string]*template.Template{}
+
+	pages, err := filepath.Glob(fmt.Sprintf("%s*.page.html", pathToTemplates))
+	if err != nil {
+		return myCache, err
+	}
+
+	for _, page := range pages {
+		name := filepath.Base(page)
+		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
+		if err != nil {
+			return myCache, err
+		}
+
+		matches, err := filepath.Glob(fmt.Sprintf("%s*.layout.html", pathToTemplates))
+		if err != nil {
+			return myCache, err
+		}
+
+		if len(matches) > 0 {
+			ts, err = ts.ParseGlob(fmt.Sprintf("%s*.layout.html", pathToTemplates))
+			if err != nil {
+				return myCache, err
+			}
+		}
+
+		myCache[name] = ts
+	}
+
+	return myCache, nil
 }
 
 func Scream(e error) {

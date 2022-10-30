@@ -25,17 +25,17 @@ func Routes() http.Handler {
 	//------------end
 
 	//adding routes--
-	mux.Get("/", handlers.RouteFinder)
-	mux.Get("/about", handlers.RouteFinder)
-	mux.Get("/contact", handlers.RouteFinder)
-	mux.Get("/rooms/general", handlers.RouteFinder)
-	mux.Get("/rooms/vip", handlers.RouteFinder)
-	mux.Get("/book", handlers.RouteFinder)
-	mux.Get("/availability", handlers.RouteFinder)
+	mux.Get("/", handlers.Repo.Home)
+	mux.Get("/about", handlers.Repo.About)
+	mux.Get("/contact", handlers.Repo.Contact)
+	mux.Get("/rooms/general", handlers.Repo.Generals)
+	mux.Get("/rooms/vip", handlers.Repo.Majors)
+	mux.Get("/book", handlers.Repo.Reservation)
+	mux.Get("/availability", handlers.Repo.Availability)
 
-	mux.Post("/PostBook", handlers.RouteFinder)
-	mux.Post("/availabilityJSON", handlers.RouteFinder)
-	mux.Post("/postAvailability", handlers.RouteFinder)
+	mux.Post("/PostBook", handlers.Repo.PostReservation)
+	mux.Post("/availabilityJSON", handlers.Repo.AvailabilityJSON)
+	mux.Post("/postAvailability", handlers.Repo.PostAvailability)
 	//------------end
 
 	return mux
