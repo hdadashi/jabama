@@ -32,7 +32,7 @@ type TemplateData struct {
 
 var functions = template.FuncMap{}
 var app *config.AppConfig
-var pathToTemplates = "./"
+var pathToTemplates = "./blades/"
 
 // AddDefaultData adds data for all templates
 func AddDefaultData(td *TemplateData, r *http.Request) *TemplateData {
@@ -68,7 +68,7 @@ func Renderer(w http.ResponseWriter, r *http.Request, tmpl string, tempData *Tem
 
 	tempData = AddDefaultData(tempData, r)
 
-	_ = t.Execute(buf, tempData)
+	t.Execute(buf, tempData)
 
 	_, err := buf.WriteTo(w)
 	if err != nil {
@@ -77,24 +77,6 @@ func Renderer(w http.ResponseWriter, r *http.Request, tmpl string, tempData *Tem
 	}
 
 	return nil
-
-	// pages, err := filepath.Glob("./*.page.html")
-	// Scream(err)
-
-	// //parsing pages and layouts
-	// for _, page := range pages {
-
-	// 	name := filepath.Base(page)
-	// 	ts, err := template.New(name).Funcs(functions).ParseFiles(page)
-
-	// 	Scream(err)
-	// 	ts, _ = ts.ParseGlob("./*.layout.html")
-	// 	if name == tmpl {
-	// 		ts.Execute(w, tempData)
-	// 	}
-	// }
-
-	// Scream(err)
 }
 
 // CreateTemplateCache creates a template cache as a map
@@ -125,7 +107,6 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 				return myCache, err
 			}
 		}
-
 		myCache[name] = ts
 	}
 

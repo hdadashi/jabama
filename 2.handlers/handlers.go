@@ -59,31 +59,31 @@ func NewHandlers(r *Repository) {
 
 // Home is the handler for the home page
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, r, "/", &render.TemplateData{})
+	render.Renderer(w, r, "home.page.html", &render.TemplateData{})
 }
 
 // About is the handler for the about page
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, r, "about.page.tmpl", &render.TemplateData{})
+	render.Renderer(w, r, "about.page.html", &render.TemplateData{})
 }
 
 // Generals renders the room page
 func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, r, "generals.page.tmpl", &render.TemplateData{})
+	render.Renderer(w, r, "general.page.html", &render.TemplateData{})
 }
 
 // Majors renders the room page
 func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, r, "majors.page.tmpl", &render.TemplateData{})
+	render.Renderer(w, r, "VIP.page.html", &render.TemplateData{})
 }
 
 // Contact renders the contact page
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, r, "contact.page.tmpl", &render.TemplateData{})
+	render.Renderer(w, r, "contact.page.html", &render.TemplateData{})
 }
 
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, r, "make-reservation.page.tmpl", &render.TemplateData{
+	render.Renderer(w, r, "book.page.html", &render.TemplateData{
 		Form: forms.New(nil),
 		Data: data.Data,
 	})
@@ -91,7 +91,7 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 
 // Availability renders the search availability page
 func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
-	render.Renderer(w, r, "search-availability.page.tmpl", &render.TemplateData{})
+	render.Renderer(w, r, "availability.page.html", &render.TemplateData{})
 }
 
 func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
@@ -105,7 +105,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	form.IsEmail("email")
 
 	if !form.Valid() {
-		render.Renderer(w, r, "make-reservation.page.tmpl", &render.TemplateData{
+		render.Renderer(w, r, "make-reservation.page.html", &render.TemplateData{
 			Form: form,
 			Data: data.Data,
 		})
