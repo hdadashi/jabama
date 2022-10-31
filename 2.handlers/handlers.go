@@ -100,25 +100,25 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 
 	form := forms.New(r.PostForm)
 
-	form.Required("first_name", "last_name", "email")
-	form.MinLength("first_name", 3, r)
+	form.Required("name", "lname", "email")
+	form.MinLength("name", 3, r)
 	form.IsEmail("email")
 
 	if !form.Valid() {
-		render.Renderer(w, r, "make-reservation.page.html", &render.TemplateData{
+		render.Renderer(w, r, "book.page.html", &render.TemplateData{
 			Form: form,
 			Data: data.Data,
 		})
 		return
 	}
 	reservation := models.Reservation{
-		FirstName: r.Form.Get("first_name"),
-		LastName:  r.Form.Get("last_name"),
+		FirstName: r.Form.Get("name"),
+		LastName:  r.Form.Get("lname"),
 		Email:     r.Form.Get("email"),
 		Phone:     r.Form.Get("phone"),
 	}
 	m.App.Session.Put(r.Context(), "reservation", reservation)
-	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
+	http.Redirect(w, r, "/reservationSummary", http.StatusSeeOther)
 }
 
 // AvailabilityJSON handles request for availability and sends JSON response
