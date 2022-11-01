@@ -10,6 +10,8 @@ import (
 	"github.com/hdadashi/jabama/driver"
 	"github.com/hdadashi/jabama/forms"
 	"github.com/hdadashi/jabama/models"
+	"github.com/hdadashi/jabama/repository"
+	"github.com/hdadashi/jabama/repository/dbrepo"
 	"github.com/justinas/nosurf"
 )
 
@@ -38,13 +40,14 @@ func SessionLoad(next http.Handler) http.Handler {
 func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
-		//DB:  dbrepo.NewPostgresRepo(db.SQL, a),
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // Repo the repository used by the handlers
