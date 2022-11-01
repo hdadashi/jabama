@@ -17,7 +17,6 @@ import (
 	"github.com/hdadashi/jabama/models"
 )
 
-var sessionManager *scs.SessionManager
 var app config.AppConfig
 var InfoLog *log.Logger
 var errorLog *log.Logger
@@ -26,12 +25,10 @@ var portNumber string = ":8080"
 // main is the main function
 func main() {
 	db, err := run()
-	if err != nil {
-		log.Fatal(err)
-	}
+	render.Scream(err)
 	defer db.SQL.Close()
 
-	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
+	fmt.Printf("Staring application on port %s \n", portNumber)
 
 	srv := &http.Server{
 		Addr:    portNumber,
