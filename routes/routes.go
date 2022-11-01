@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	handlers "github.com/hdadashi/jabama/2.handlers"
 	"github.com/hdadashi/jabama/config"
+	"github.com/hdadashi/jabama/handlers"
 )
 
 var mux = chi.NewRouter()

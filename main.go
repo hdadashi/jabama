@@ -9,13 +9,13 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	routes "github.com/hdadashi/jabama/1.routes"
-	handlers "github.com/hdadashi/jabama/2.handlers"
-	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
 	"github.com/hdadashi/jabama/driver"
+	"github.com/hdadashi/jabama/handlers"
 	"github.com/hdadashi/jabama/helpers"
 	"github.com/hdadashi/jabama/models"
+	"github.com/hdadashi/jabama/render"
+	"github.com/hdadashi/jabama/routes"
 )
 
 var app config.AppConfig

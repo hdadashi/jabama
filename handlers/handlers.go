@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
-	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
 	"github.com/hdadashi/jabama/driver"
 	"github.com/hdadashi/jabama/forms"
 	"github.com/hdadashi/jabama/models"
+	"github.com/hdadashi/jabama/render"
 	"github.com/hdadashi/jabama/repository"
 	"github.com/hdadashi/jabama/repository/dbrepo"
 	"github.com/justinas/nosurf"
