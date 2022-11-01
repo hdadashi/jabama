@@ -14,6 +14,7 @@ import (
 	render "github.com/hdadashi/jabama/3.render"
 	"github.com/hdadashi/jabama/config"
 	"github.com/hdadashi/jabama/driver"
+	"github.com/hdadashi/jabama/helpers"
 	"github.com/hdadashi/jabama/models"
 )
 
@@ -87,7 +88,7 @@ func run() (*driver.DB, error) {
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)
 	render.NewRenderer(&app)
-	//helpers.NewHelpers(&app)
+	helpers.NewHelpers(&app)
 
 	return db, nil
 }
